@@ -10,11 +10,11 @@ Access this link for a live demo, if it is not working, checkout the video below
 
 ### Block Configuration
 
-![urag](https://github.com/user-attachments/assets/1cabdaa3-5f32-49cf-80aa-f9da017fe321)
+> ![urag](https://github.com/user-attachments/assets/1cabdaa3-5f32-49cf-80aa-f9da017fe321)
 
 ### Video
 
-https://github.com/user-attachments/assets/4ee84915-1d1e-4582-a44e-a9cf8382cc82
+> https://github.com/user-attachments/assets/1b1f2231-2632-4e37-b77e-6c0bf8d81238
 
 
 ## Features
