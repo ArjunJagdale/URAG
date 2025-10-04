@@ -14,7 +14,8 @@ Access this link for a live demo, if it is not working, checkout the video below
 
 ### Video
 
-https://github.com/user-attachments/assets/49ee17dc-fc8e-45b0-b784-ade507d2ca3b
+https://github.com/user-attachments/assets/4ee84915-1d1e-4582-a44e-a9cf8382cc82
+
 
 ## Features
 
