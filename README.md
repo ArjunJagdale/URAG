@@ -6,15 +6,9 @@ A powerful RAG (Retrieval-Augmented Generation) system that allows users to ask 
 Access this link for a live demo, if it is not working, checkout the video below - 
 [Demo link](https://huggingface.co/spaces/ajnx014/Multi-URL-RAG-LangGraph)
 
-## User Interface
+## Video
 
-### Block Configuration
-
-> ![urag](https://github.com/user-attachments/assets/1cabdaa3-5f32-49cf-80aa-f9da017fe321)
-
-### Video
-
-> https://github.com/user-attachments/assets/63ee3e55-568d-4445-9a32-dddbaf7d3987
+> https://github.com/user-attachments/assets/c3003550-816b-4bce-995d-a39739005319
 
 ## Features
 
