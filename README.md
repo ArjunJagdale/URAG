@@ -1,3 +1,5 @@
+
+https://github.com/user-attachments/assets/13749041-c5c5-4b6d-b044-5fcb16f4ef4e
 # Multi-URL RAG System
 
 A powerful RAG (Retrieval-Augmented Generation) system that allows users to ask questions across multiple websites using LangChain, LangGraph, OpenRouter, and Gradio.
@@ -14,8 +16,7 @@ Access this link for a live demo, if it is not working, checkout the video below
 
 ### Video
 
-> https://github.com/user-attachments/assets/1b1f2231-2632-4e37-b77e-6c0bf8d81238
-
+> https://github.com/user-attachments/assets/63ee3e55-568d-4445-9a32-dddbaf7d3987
 
 ## Features
 
