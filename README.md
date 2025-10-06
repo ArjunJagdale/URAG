@@ -1,6 +1,10 @@
-# Multi-URL RAG System
+# 🔍 Multi-URL RAG System with LangChain & LangGraph
 
-A powerful RAG (Retrieval-Augmented Generation) system that allows users to ask questions across multiple websites using LangChain, LangGraph, OpenRouter, and Gradio.
+A production-ready question-answering system that fetches content from multiple URLs and generates intelligent answers using Retrieval-Augmented Generation (RAG) with LangChain and LangGraph orchestration.
+
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![LangChain](https://img.shields.io/badge/LangChain-🦜-green.svg)](https://www.langchain.com/)
+[![LangGraph](https://img.shields.io/badge/LangGraph-🕸️-purple.svg)](https://langchain-ai.github.io/langgraph/)
 
 ## Video
 
@@ -14,169 +18,359 @@ A powerful RAG (Retrieval-Augmented Generation) system that allows users to ask 
 > <img width="1539" height="819" alt="image" src="https://github.com/user-attachments/assets/d6de2955-d049-453b-a716-abb60fae36df" />
 
 
-## Features
+## 🌟 Overview
 
-- 🌐 **Multi-URL Support**: Process multiple websites simultaneously
-- 🧠 **Smart Chunking**: Intelligent text splitting and embedding
-- 🔍 **Vector Search**: FAISS-powered similarity search
-- 🤖 **AI Answers**: OpenRouter integration for high-quality responses
-- 📏 **Flexible Length**: Short, medium, or detailed answers
-- 📚 **Citations**: Automatic source attribution
-- 🔄 **LangGraph Workflow**: Node-based processing pipeline
-- 🎨 **Web Interface**: Clean Gradio UI
+This system demonstrates advanced **LangChain** and **LangGraph** capabilities to build a robust multi-source RAG pipeline that:
 
-## Architecture
+- Fetches and processes content from multiple web URLs
+- Creates semantic embeddings using FAISS vector store
+- Orchestrates complex workflows with LangGraph state machines
+- Generates contextual answers with retry logic and error handling
+- Provides an interactive Gradio interface for easy use
 
-The system uses LangGraph to orchestrate a multi-node workflow:
+## 🎯 Key Features
 
+### LangChain Integration
+- **Document Processing**: Uses `RecursiveCharacterTextSplitter` for intelligent chunking
+- **Vector Store**: FAISS-based semantic search with HuggingFace embeddings
+- **LLM Integration**: OpenRouter API integration via `ChatOpenAI`
+- **Prompt Engineering**: Structured prompts with `ChatPromptTemplate`
+- **Chain Composition**: LCEL (LangChain Expression Language) for pipeline building
+
+### LangGraph Orchestration
+- **State Management**: Type-safe state definitions with `TypedDict`
+- **Conditional Routing**: Dynamic workflow paths based on processing outcomes
+- **Error Handling**: Automatic retry logic with configurable attempts
+- **Memory Persistence**: `MemorySaver` for conversation history
+- **Graph-based Workflow**: Visual workflow with 7 interconnected nodes
+
+## 🏗️ Architecture
+
+### LangGraph Workflow
+
+```mermaid
+graph TD
+    A[Start] --> B[Fetch Content]
+    B --> C{Content Valid?}
+    C -->|No| D{Retry Available?}
+    D -->|Yes| B
+    D -->|No| E[Log Error & Exit]
+    C -->|Yes| F[Validate Content Structure]
+    F --> G{Structure Valid?}
+    G -->|No| E
+    G -->|Yes| H[Process Documents]
+    H --> I[Create Embeddings]
+    I --> J{Embeddings Created?}
+    J -->|No| K{Retry Embedding?}
+    K -->|Yes| I
+    K -->|No| E
+    J -->|Yes| L[Store in Vector DB]
+    L --> M[Retrieve Context]
+    M --> N{Context Found?}
+    N -->|No| O[Use Fallback Response]
+    N -->|Yes| P[Generate Answer]
+    O --> Q[End]
+    P --> Q
+    E --> Q
 ```
-📥 Fetch Content → 📄 Process Documents → 🔍 Create Vector Store → 🔎 Retrieve Documents → 🤖 Generate Answer
-```
 
-### Node Details
+### State Graph Nodes
 
-1. **Fetch Content**: Downloads and cleans HTML from URLs
-2. **Process Documents**: Chunks text and creates Document objects
-3. **Create Vector Store**: Generates embeddings and builds FAISS index
-4. **Retrieve Documents**: Finds relevant chunks based on query
-5. **Generate Answer**: Uses LLM to compose final response with citations
+1. **fetch_content_node** - Retrieves content from URLs with retry support
+2. **validate_content_node** - Ensures content quality and length
+3. **process_documents_node** - Chunks documents with metadata
+4. **create_embeddings_node** - Builds FAISS vector store
+5. **retrieve_context_node** - Performs semantic search
+6. **generate_answer_node** - Generates LLM response with citations
+7. **handle_error_node** - Graceful error recovery
 
-## Setup
+## 🚀 Getting Started
 
-### 1. Install Dependencies
+### Prerequisites
 
 ```bash
+Python 3.8+
+OpenRouter API Key
+```
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/ArjunJagdale/URAG.git
+cd URAG
+
+# Install dependencies
 pip install -r requirements.txt
 ```
 
-### 2. Get OpenRouter API Key
+### Required Dependencies
 
-1. Visit [OpenRouter](https://openrouter.ai/)
-2. Sign up and get your API key
-3. You can use various models through OpenRouter (GPT-4, Claude, Llama, etc.)
+```txt
+langchain
+langchain-community
+langchain-openai
+langgraph
+faiss-cpu
+sentence-transformers
+beautifulsoup4
+requests
+gradio
+```
 
-### 3. Run Locally
+### Environment Setup
+
+```bash
+# Set your OpenRouter API key
+export OPENROUTER_API_KEY="your-api-key-here"
+```
+
+Or create a `.env` file:
+```
+OPENROUTER_API_KEY=your-api-key-here
+```
+
+### Running the Application
 
 ```bash
 python app.py
 ```
 
-## Deployment on Hugging Face Spaces
+The Gradio interface will launch at `http://localhost:7860`
 
-### 1. Create a new Space
+## 💡 Usage Example
 
-1. Go to [Hugging Face Spaces](https://huggingface.co/spaces)
-2. Click "Create new Space"
-3. Choose "Gradio" as the SDK
-4. Set visibility to Public or Private
-
-### 2. Upload Files
-
-Upload these files to your Space:
-- `app.py` (main application)
-- `requirements.txt`
-- `README.md`
-
-### 3. Configure Space
-
-Create an `app.py` file in your Space with the main code, ensuring the last lines are:
+### Basic Usage
 
 ```python
-if __name__ == "__main__":
-    demo = create_gradio_interface()
-    demo.launch()
+from multi_url_rag import MultiURLRAGSystem
+
+# Initialize system
+rag_system = MultiURLRAGSystem(openrouter_api_key="your-key")
+
+# Process query
+urls = [
+    "https://example.com/article1",
+    "https://example.com/article2"
+]
+
+result = rag_system.process_query(
+    urls=urls,
+    query="What are the main topics discussed?",
+    answer_length="medium"
+)
+
+print(result["final_answer"])
+print(result["citations"])
 ```
 
-### 4. Environment Variables (Optional)
+### Via Gradio Interface
 
-You can set a default API key in Space secrets:
-- Go to your Space settings
-- Add a secret named `OPENROUTER_API_KEY`
-- Users can still override this in the UI
+1. **Enter URLs** (one per line)
+2. **Type your question**
+3. **Select answer length** (short/medium/detailed)
+4. **Click "Get Answer"**
+5. **View AI-generated response with citations**
 
-## Usage
+## 🔧 LangChain Components Deep Dive
 
-1. **Initialize**: Enter your OpenRouter API key and click "Initialize System"
-2. **Add URLs**: Paste website URLs (one per line)
-3. **Ask Question**: Enter your question
-4. **Choose Length**: Select answer length (short/medium/detailed)
-5. **Get Answer**: Click "Ask Question" to get AI-powered response with citations
+### Document Processing
 
-## Example Use Cases
+```python
+text_splitter = RecursiveCharacterTextSplitter(
+    chunk_size=1000,
+    chunk_overlap=200,
+    length_function=len,
+    separators=["\n\n", "\n", ". ", " ", ""]
+)
+```
 
-- **Research**: Compare information across multiple sources
-- **Documentation**: Query multiple API docs or tutorials
-- **News Analysis**: Analyze multiple news articles
-- **Product Research**: Compare features across different websites
+- **Intelligent chunking** preserves semantic coherence
+- **Overlap strategy** maintains context between chunks
+- **Metadata tracking** for source attribution
 
-## Configuration Options
+### Embeddings & Vector Store
 
-### Models
+```python
+embeddings = HuggingFaceEmbeddings(
+    model_name="sentence-transformers/all-MiniLM-L6-v2"
+)
 
-You can change the OpenRouter model in the `MultiURLRAGSystem` constructor:
+vector_store = FAISS.from_documents(
+    documents,
+    embeddings
+)
+```
+
+- **Local embeddings** (no API calls)
+- **Fast similarity search** with FAISS indexing
+- **Efficient retrieval** with configurable top-k
+
+### LLM Chain with LCEL
+
+```python
+chain = prompt | self.llm | StrOutputParser()
+
+answer = chain.invoke({
+    "context": formatted_context,
+    "question": user_query,
+    "length_instruction": instruction
+})
+```
+
+- **Composable chains** using pipe operator
+- **Structured prompts** for consistent outputs
+- **Streaming support** (future enhancement)
+
+## 🕸️ LangGraph State Management
+
+### State Definition
+
+```python
+class RAGState(TypedDict):
+    urls: List[str]
+    raw_content: Dict[str, str]
+    documents: List[Document]
+    query: str
+    answer_length: str
+    retrieved_docs: List[Document]
+    final_answer: str
+    citations: List[Dict[str, str]]
+    error_messages: List[str]
+    processing_status: str
+    retry_count: int
+```
+
+### Conditional Routing
+
+```python
+workflow.add_conditional_edges(
+    "fetch_content",
+    should_continue_after_fetch,
+    {"continue": "validate_content", "error": "handle_error"}
+)
+```
+
+- **Dynamic paths** based on processing results
+- **Retry logic** for transient failures
+- **Error isolation** with dedicated handler
+
+### Memory Persistence
+
+```python
+memory = MemorySaver()
+graph = workflow.compile(checkpointer=memory)
+
+config = {"configurable": {"thread_id": "session_1"}}
+result = graph.invoke(initial_state, config)
+```
+
+- **Conversation tracking** across invocations
+- **State checkpointing** for debugging
+- **Thread-based isolation** for multi-user scenarios
+
+## 📊 Answer Length Configuration
+
+| Length | Chunks Retrieved | Output Style |
+|--------|------------------|--------------|
+| **Short** | 3 | 2-3 sentences |
+| **Medium** | 6 | 2-3 paragraphs |
+| **Detailed** | 10 | Multiple paragraphs with depth |
+
+## 🛠️ Advanced Features
+
+### Retry Mechanism
+
+- Automatic retry for failed URL fetches (up to 2 attempts)
+- Exponential backoff can be added for production use
+
+### Content Validation
+
+- Minimum word count threshold (50 words)
+- HTML cleaning and text extraction
+- Paywall detection
+
+### Citation Tracking
+
+- Automatic source attribution
+- Unique URL deduplication
+- Chunk-level metadata preservation
+
+## 🔒 Error Handling
+
+The system includes comprehensive error handling:
+
+- **Network failures** - Retry with exponential backoff
+- **Content validation** - Skip low-quality sources
+- **Embedding errors** - Graceful degradation
+- **LLM failures** - Fallback responses
+
+## 🎨 Customization
+
+### Change LLM Model
 
 ```python
 self.llm = ChatOpenAI(
     base_url="https://openrouter.ai/api/v1",
-    api_key=openrouter_api_key,
-    model="anthropic/claude-3-haiku",  # or "openai/gpt-4", "meta-llama/llama-2-70b-chat", etc.
+    api_key=self.openrouter_api_key,
+    model="anthropic/claude-3-sonnet",  # Change model here
     temperature=0.1
 )
 ```
 
-### Embedding Model
-
-Change the embedding model for different languages or performance:
-
-```python
-self.embeddings = HuggingFaceEmbeddings(
-    model_name="sentence-transformers/all-mpnet-base-v2"  # Better quality
-    # model_name="sentence-transformers/all-MiniLM-L6-v2"  # Faster
-)
-```
-
-### Chunking Strategy
-
-Adjust text splitting parameters:
+### Adjust Chunk Size
 
 ```python
 self.text_splitter = RecursiveCharacterTextSplitter(
-    chunk_size=1500,  # Larger chunks
-    chunk_overlap=300,  # More overlap
-    length_function=len,
-    separators=["\n\n", "\n", " ", ""]
+    chunk_size=1500,  # Increase for more context
+    chunk_overlap=300,
+    # ...
 )
 ```
 
-## Troubleshooting
+### Modify Retrieval Count
 
-### Common Issues
+```python
+k_map = {"short": 5, "medium": 8, "detailed": 15}
+```
 
-1. **API Key Error**: Ensure your OpenRouter API key is valid
-2. **URL Fetch Failure**: Some websites block automated requests
-3. **Memory Issues**: Large documents may require more RAM
-4. **Slow Processing**: Consider using faster embedding models
+## 📈 Performance Considerations
 
-### Performance Tips
+- **Embedding Model**: Lightweight all-MiniLM-L6-v2 (fast, good quality)
+- **Vector Store**: FAISS CPU (production: consider GPU version)
+- **Chunking**: Optimized for 1000 tokens per chunk
+- **Caching**: Vector store persists across queries in same session
 
-- Use fewer URLs for faster processing
-- Choose appropriate chunk sizes for your content
-- Consider caching embeddings for frequently used URLs
+## 🤝 Contributing
 
-## Contributing
+Contributions are welcome! Areas for enhancement:
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
+- [ ] Add streaming responses for real-time output
+- [ ] Implement vector store persistence
+- [ ] Add support for PDF/document uploads
+- [ ] Multi-modal support (images, tables)
+- [ ] Advanced citation formatting
+- [ ] Query expansion and rewriting
 
-## License
+## 📝 License
 
-MIT License - see LICENSE file for details
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-## Support
+## 🙏 Acknowledgments
 
-For issues and questions:
-- Create an issue in the GitHub repository
-- Check the OpenRouter documentation for API issues
-- Review LangChain/LangGraph docs for framework questions
+- **LangChain** - Framework for LLM applications
+- **LangGraph** - State machine orchestration
+- **FAISS** - Efficient similarity search
+- **Gradio** - User interface framework
+- **HuggingFace** - Embedding models
+
+## 📧 Contact
+
+**Arjun Jagdale**
+
+- GitHub: [@ArjunJagdale](https://github.com/ArjunJagdale)
+- Repository: [URAG](https://github.com/ArjunJagdale/URAG)
+
+---
+
+⭐ If you find this project helpful, please consider giving it a star!
