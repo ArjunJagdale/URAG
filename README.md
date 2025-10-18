@@ -6,17 +6,11 @@ A production-ready question-answering system that fetches content from multiple 
 [![LangChain](https://img.shields.io/badge/LangChain-🦜-green.svg)](https://www.langchain.com/)
 [![LangGraph](https://img.shields.io/badge/LangGraph-🕸️-purple.svg)](https://langchain-ai.github.io/langgraph/)
 
-## Video
+## Video Demo
+https://github.com/user-attachments/assets/7a629ee4-a744-40af-a40f-87c7a31c8af2
 
-> https://github.com/user-attachments/assets/c3003550-816b-4bce-995d-a39739005319
-
-## Images
-> ### Can fill in the blanks, based on the given context
-> <img width="1683" height="869" alt="image" src="https://github.com/user-attachments/assets/61b5088a-036e-43b1-b62a-821f1e8e217a" />
----
-> ### Can tell if the sentence is true or false
-> <img width="1539" height="819" alt="image" src="https://github.com/user-attachments/assets/d6de2955-d049-453b-a716-abb60fae36df" />
-
+## Live Demo
+[Click here to see the live demo](https://huggingface.co/spaces/ajnx014/Multi-URL-RAG-LangGraph)
 
 ## 🌟 Overview
 
