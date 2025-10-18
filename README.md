@@ -7,7 +7,7 @@ A production-ready question-answering system that fetches content from multiple 
 [![LangGraph](https://img.shields.io/badge/LangGraph-🕸️-purple.svg)](https://langchain-ai.github.io/langgraph/)
 
 ## Video Demo
-https://github.com/user-attachments/assets/7a629ee4-a744-40af-a40f-87c7a31c8af2
+https://github.com/user-attachments/assets/c6cd300f-6ac6-4892-900c-89ae3e92ce48
 
 ## Live Demo
 [Click here to see the live demo](https://huggingface.co/spaces/ajnx014/Multi-URL-RAG-LangGraph)
